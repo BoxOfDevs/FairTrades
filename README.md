@@ -7,7 +7,7 @@ Please reply to that issue with your opinion on the plugin name<br>
 # Planned Features (An example scene) <br>
 <br>
 Lets say $player1 = TheDragonRing  and   $player2 = remote_vase<br>
-$player1 is having a bidding war, and $player2 has the highest bid.
+$player1 is having a trading war, and $player2 is giving the most valuable items. <br>
 $player1 types "/trade $player2"<br>
 Once $player1 types that, chat is suspended for those players for a duration of 10 seconds as both players can privately message each other for reason why want trade.<br>
 After those 10 seconds, chat resumes for both players, and $player2 can type "/trade accept" or "/trade decline".<br>
