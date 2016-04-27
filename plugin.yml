@@ -1,0 +1,15 @@
+---
+name: FairTrades
+author:  BoxOfDevs Team
+version: 1.0
+api: [2.0.0]
+main: BoxOfDevs\FairTrades\Main
+commands: 
+    trade:
+       description: "Main FairTrades command"
+       usage: "/trade <subcommand> <parameters>"
+       permission: trade.trade
+permissions: 
+    trade.trade:
+       default: op
+...
