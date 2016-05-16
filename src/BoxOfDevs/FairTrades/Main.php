@@ -5,6 +5,7 @@ use pocketmine\command\Command;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use BoxOfDevs\FairTrades\chatTask;
+use BoxOfDevs\FairTrades\item_exange;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
  use pocketmine\Player;
@@ -83,6 +84,27 @@ switch($cmd->getName()){
 				$this->trade-part[$player2->getName()] = 2;
 			    $this->trade-part[$sender->getName()] = 2;
 			} elseif($args[0] === "decline") {
+				$player2->sendMessage("$sender->getName() declined the trade.");
+				$this->trade-part[$player2->getName()] = 0;
+			    $this->trade-part[$sender->getName()] = 0;
+				unset($this->trade-with[$player2->getName()]);
+				unset($this->trade-with[$sender->getName()]);
+			} else {
+				$sender->sendMessage("Please enter a correct choice: /trade accept or /trade decline");
+			}
+		} else {
+			$sender->sendMessage("Usage: /trade accept or /trade decline");
+		}
+		break;
+		case 4:
+		if(isset($args[2])) {
+			$player2 = $this->trade-with[$sender->getName()];
+			if($args[0] === "additem") { //If the trade is accepted
+				$player2->sendMessage("$sender->getName() added an item.");
+				$item = explode(":", $args[1]);
+				$this->trade-part[$player2->getName()] = 2;
+			    $this->trade-part[$sender->getName()] = 2;
+			} elseif($args[0] === "removeitem") {
 				$player2->sendMessage("$sender->getName() declined the trade.");
 				$this->trade-part[$player2->getName()] = 0;
 			    $this->trade-part[$sender->getName()] = 0;
