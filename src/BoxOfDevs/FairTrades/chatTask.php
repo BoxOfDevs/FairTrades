@@ -29,4 +29,3 @@ use pocketmine\math\Vector3;
        }
        }
    }
-   }

@@ -9,7 +9,7 @@ class ItemStore {
    public function __construct(Main $pl, Player $player) {
        $this->player = $player;
        $this->playercard = [];
-       $this->pl = $pl
+       $this->pl = $pl;
    }
    public function hasItem(Player $player, $itemid, $damage, $counts) {
        $count = 0;
@@ -25,8 +25,16 @@ class ItemStore {
            return false;
        }
    }
+   public function transferItems(Player $player) {
+       foreach($this->playercard as $item) {
+           $id = 0;
+           while($id ===! 10) {
+               $this->player->getInventory()->addItem(Item::get($itemid, $id, $itemid[$id]));
+               $this->player->getInventory()->removeItem(Item::get($itemid, $id, $itemid[$id]));
+           }
+       }
+   }
    public function addItem($itemid, $damage, $count) {
-       if($player === $this->player) {
            if(isset($this->playercard[$itemid][$damage]) and hasItem($player, $itemid, $damage, $count + $this->playercard[$itemid][$damage])) {
                $this->playercard[$itemid][$damage] = $this->playercard[$itemid][$damage] + $count;
                $this->pl->trade_with[$player->getName()]->sendMessage("$this->player->getName() added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
@@ -36,7 +44,6 @@ class ItemStore {
            } else {
                $this->playercard[$itemid] = [$damage => $count];
            }
-       }
    }
    public function removeItem(Player $player, $itemid, $damage, $count = "all") {
        if($player === $this->player) {
