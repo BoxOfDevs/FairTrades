@@ -16,7 +16,6 @@ class ItemStore {
        $count = 0;
        foreach ($this->player->getInventory()->getContents() as $slot => &$inv) {
            if ($itemid === $inv->getId() and $damage === $inv->getDamage()) {
-               $this->player->sendPopup("Hey");
                $c = $inv->getCount();
                $count = $count + $c;
            }
@@ -61,14 +60,14 @@ class ItemStore {
            if(isset($this->playercard[$itemid][$damage]) and $this->hasItem($itemid, $damage, $count + $this->playercard[$itemid][$damage])) {
                $this->playercard[$itemid][$damage] = $this->playercard[$itemid][$damage] + $count;
                $this->pl->trade_with[$this->player->getName()]->sendMessage($this->player->getName() ." added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
-               $this->player->sendMessage("You added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
+               $this->player->sendMessage(C::GREEN . "You added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
            } elseif(isset($this->playercard[$itemid]) and $this->hasItem($itemid, $damage, $count)) {
                $this->pl->trade_with[$this->player->getName()]->sendMessage($this->player->getName() . " added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
-               $this->player->sendMessage("You added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
+               $this->player->sendMessage(C::GREEN . "You added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
                 $this->playercard[$itemid][$damage] =  $count;
            } elseif($this->hasItem($itemid, $damage, $count)) {
                $this->pl->trade_with[$this->player->getName()]->sendMessage($this->player->getName() . " added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
-               $this->player->sendMessage("You added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
+               $this->player->sendMessage(C::GREEN . "You added an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
                $this->playercard[$itemid] = [$damage => $count];
            } else {
                $this->player->sendMessage("Don't try to exange items that you don't have  !");
@@ -80,11 +79,11 @@ class ItemStore {
                 if($count === "all") {
                     unset($this->playercard[$itemid][$damage]);
                     $this->pl->trade_with[$this->player->getName()]->sendMessage($this->player->getName()." remove all " .  Item::get($itemid)->getName() . ":" . $damage);
-                    $this->player->sendMessage("You removed all " . Item::get($itemid)->getName() . ":" . $damage);
+                    $this->player->sendMessage(C::RED . "You removed all " . Item::get($itemid)->getName() . ":" . $damage);
                 } elseif(is_numeric($count)) {
                     $this->playercard[$itemid][$damage] = $this->playercard[$itemid][$damage] - $count;
                     $this->pl->trade_with[$this->player->getName()]->sendMessage($this->player->getName()." removed an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
-                    $this->player->sendMessage("You removed an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
+                    $this->player->sendMessage(C::RED . "You removed an item : " . $count . "x " . Item::get($itemid)->getName() . ":" . $damage);
                 }
            }
        }

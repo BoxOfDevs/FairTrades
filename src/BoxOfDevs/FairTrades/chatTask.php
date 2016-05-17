@@ -22,7 +22,7 @@ use pocketmine\math\Vector3;
 	}
    public function onRun($tick) {
 	   $this->p->setTradePhase($this->player, 3);
-	   $this->player->sendMessage("Times up! Now you can accept or decline the trade by doing /trade accept or /trade decline");
+	   $this->player->sendMessage(C::GREEN . "Times up! Now you can accept or decline the trade by doing /trade accept or /trade decline");
 	   $this->p->getServer()->getPluginManager()->subscribeToPermission(Server::BROADCAST_CHANNEL_USERS, $this->player);
        if($this->player->isOp()) {
            $this->p->getServer()->getPluginManager()->subscribeToPermission(Server::BROADCAST_CHANNEL_USERS, $this->player);
