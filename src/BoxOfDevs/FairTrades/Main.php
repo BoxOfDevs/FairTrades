@@ -23,7 +23,7 @@ $this->items =[];
      if($this->trade_part[$event->getPlayer()->getName()] === 2) {
          $event->setCancelled();
          $this->trade_with[$event->getPlayer()->getName()]->sendMessage("§l§b[Trade mate] " . $event->getPlayer()->getName() . ">§r§f " . $event->getMessage());
-         $event->getPlayer()->sendMessage("§l§b[Trade mate] " . $event->getPlayer()->getName() . ">§r§f " . $event->getMessage());
+         $event->getPlayer()->sendMessage("§l§a[You] " . $event->getPlayer()->getName() . ">§r§f " . $event->getMessage());
      }
  }
 public function onJoin(PlayerJoinEvent $event){
@@ -45,10 +45,12 @@ switch($cmd->getName()){
     }
     if($args[0] === "part") {
         $sender->sendMessage("Your part" .$this->trade_part[$sender->getName()]);
+    } elseif($args[0] === "setpart") {
+        $this->setTradePhase($sender, $args[1]);
     }
 	switch($this->trade_part[$sender->getName()]) {
 		case 0:
-		if(isset($args[0])) {
+		if(isset($args[0]) and $this->getServer()->getPlayer($args[0]) instanceof Player) {
 			$player2 = $this->getServer()->getPlayer($args[0]);
 			$player2->sendMessage($sender->getName(). " want to start trading with you. Do /trade accept ". $sender->getName() . " to accept the trade or /trade decline ". $sender->getName() . " to decline the trade");
 			$this->trade_part[$sender->getName()] = 1;
@@ -96,8 +98,8 @@ switch($cmd->getName()){
 				if($this->trade_part[$player2->getName()] === 3.5) { // if the other player already accepted the trade, they would have both accepted
 				      $this->trade_part[$sender->getName()] = 4;
 					  $this->trade_part[$player2->getName()] = 4;
-				     $player2->sendMessage("You have both accepted the trade. Use /additem and /removeitem to chose items to trade");
-				     $sender->sendMessage("You have both accepted the trade. Use /additem and /removeitem to chose items to trade");
+				     $player2->sendMessage("You have both accepted the trade. Use /trade additem <item:damage> <count> and /trade removeitem  <item:damage> <count> to chose items to trade");
+				     $sender->sendMessage("You have both accepted the trade. Use /trade additem <item:damage> <count> and /trade removeitem  <item:damage> <count> to chose items to trade");
 				}
 			} elseif($args[0] === "decline") {
 				$player2->sendMessage($sender->getName() . " declined the trade.");
@@ -113,32 +115,33 @@ switch($cmd->getName()){
 		}
 		break;
 		case 4:
-        $sender->sendMessage("Step 4");
 		if(isset($args[2])) {
 			$player2 = $this->trade_with[$sender->getName()];
             if(!isset($this->items[$sender->getName()])) {
                 $this->items[$sender->getName()] = new ItemStore($this, $sender);
             }
             if(!isset($this->items[$player2->getName()])) {
-                $this->items[$sender->getName()] = new ItemStore($this, $player2);
+                $this->items[$player2->getName()] = new ItemStore($this, $player2);
             }
 			if($args[0] === "additem") {
 				$item = explode(":", $args[1]);
                 $this->items[$sender->getName()]->addItem($item[0], $item[1], $args[2]);
 			} elseif($args[0] === "removeitem") {
 				$item = explode(":", $args[1]);
-                $this->items[$sender->getName()]->addItem($item[0], $item[1], $args[2]);
+                $this->items[$sender->getName()]->removeItem($item[0], $item[1], $args[2]);
             } else {
-				$sender->sendMessage("Please enter a correct choice: /trade additem <item:damage> <count>,  /trade removeitem <item:damage> <count> or /trade finish");
+				$sender->sendMessage("Please enter a correct choice: /trade additem <item:damage> <count>,  /trade removeitem <item:damage> <count>, /trade check or /trade finish");
 			}
-		} elseif($args[0] === "finish") {
+		} elseif($args[0] === "check") {
+			$player2 = $this->trade_with[$sender->getName()];
+            $sender->sendMessage("You purpose " . $this->items[$sender->getName()]->getAll());
+            $sender->sendMessage($player2->getName() . " purpose " . $this->items[$player2->getName()]->getAll());
+        } elseif($args[0] === "finish") {
 			$player2 = $this->trade_with[$sender->getName()];
 			$this->trade_part[$sender->getName()] = 5;
 			$this->trade_part[$player2->getName()] = 5;
             $player2->sendMessage($sender->getName(). " stopped the trade. ");
             $sender->sendMessage("You stopped the trade.");
-            $sender->sendMessage("You purpose " . $this->items[$sender->getName()]->getAll());
-            $sender->sendMessage($player2->getName() . " purpose " . $this->items[$player2->getName()]->getAll());
             $player2->sendMessage("You purpose " .  $this->items[$player2->getName()]->getAll());
             $player2->sendMessage($sender->getName() . " purpose " . $this->items[$sender->getName()]->getAll());
         } else {
