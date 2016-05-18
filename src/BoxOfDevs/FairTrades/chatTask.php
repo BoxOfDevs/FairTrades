@@ -18,11 +18,12 @@ use pocketmine\math\Vector3;
     public function __construct(Plugin $plugin, Player $player){
         parent::__construct($plugin);
 		$this->p = $plugin;
+        $this->line_breaker = C::GOLD . "--------------------------------------\n";
 		$this->player = $player;
 	}
    public function onRun($tick) {
 	   $this->p->setTradePhase($this->player, 3);
-	   $this->player->sendMessage(C::GREEN . "Times up! Now you can accept or decline the trade by doing /trade accept or /trade decline");
+	   $this->player->sendMessage($this->line_breaker . C::GREEN . "Times up! Now you can accept or decline the trade by doing /trade accept or /trade decline" . $this->line_breaker);
 	   $this->p->getServer()->getPluginManager()->subscribeToPermission(Server::BROADCAST_CHANNEL_USERS, $this->player);
        if($this->player->isOp()) {
            $this->p->getServer()->getPluginManager()->subscribeToPermission(Server::BROADCAST_CHANNEL_USERS, $this->player);
