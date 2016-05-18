@@ -18,8 +18,8 @@ class ItemStore {
    public function hasItem(Item $item) {
        $count = 0;
        for ($index = 0; $index < $this->player->getInventory()->getSize(); ++$index) {
-           if ($item === $this->player->getInventory()->getItem($index)) {
-               $c = $player->getInventory()->getItem($index)->getCount();
+           if ($item->getId() === $this->player->getInventory()->getItem($index)->getId() and $item->getDamage() === $this->player->getInventory()->getItem($index)->getDamage()) {
+               $c = $this->player->getInventory()->getItem($index)->getCount();
                $count = $count + $c;
            }
        }
@@ -65,6 +65,14 @@ class ItemStore {
                array_push($this->playercard, $storeditem);
            }
            $id++;
+       }
+   }
+   public function isItemSet($item) {
+       return false;
+       foreach($this->playercard as $storeditem) {
+           if($storeditem->getId() === $item->getId() and $storeditem->getDamage() === $item->getDamage()) {
+               return true;
+           }
        }
    }
    public function addItem(Item $item) {

@@ -66,7 +66,7 @@ switch($cmd->getName()){
 			$player2 = $this->getServer()->getPlayer($args[1]);
 			if($this->trade_part[$player2->getName()] === 1 and $this->trade_with[$player2->getName()] === $sender and $args[0] === "accept") { //If the trade is accepted
 				$player2->sendMessage($this->line_breaker . C::GREEN . $sender->getName() . " accepted your trade! You have 45 seconds to talk together about the trade\n" . $this->line_breaker);
-				$sender->sendMessage($this->line_breaker . C::GREEN . "You accepted the trade! You have 45 seconds to talk together about the trade" . $this->line_breaker);
+				$sender->sendMessage($this->line_breaker . C::GREEN . "You accepted the trade! You have 45 seconds to talk together about the trade\n" . $this->line_breaker);
 				$this->trade_part[$player2->getName()] = 2;
 			    $this->trade_part[$sender->getName()] = 2;
 				$this->getServer()->getScheduler()->scheduleDelayedTask(new  chatTask($this, $sender), 900); //shedule task so in 45 seconds, they will be switched to part 3;
@@ -126,10 +126,13 @@ switch($cmd->getName()){
                 $this->items[$player2->getName()] = new ItemStore($this, $player2);
             }
 			if($args[0] === "additem") {
-                $this->items[$sender->getName()]->addItem(Item::fromString($args[1]));
+                $item = Item::fromString($args[1]);
+                $item->setCount($args[2]);
+                $this->items[$sender->getName()]->addItem($item);
 			} elseif($args[0] === "removeitem") {
-				$item = explode(":", $args[1]);
-                $this->items[$sender->getName()]->removeItem(Item::fromString($args[1]));
+                $item = Item::fromString($args[1]);
+                $item->setCount($args[2]);
+                $this->items[$sender->getName()]->removeItem($item);
             } else {
 				$sender->sendMessage($this->line_breaker .  C::RED . "Please enter a correct choice: /trade additem <item:damage> <count>,  /trade removeitem <item:damage> <count>, /trade check or /trade finish");
 			}
@@ -151,13 +154,13 @@ switch($cmd->getName()){
 			$sender->sendMessage($this->line_breaker . C::RED . "Usage: /trade additem <item:damage> <count>,  /trade removeitem <item:damage> <count> or /trade finish");
 		}
 		break;
-        case 5.5:
         case 5:
+        case 6:
 		$player2 = $this->trade_with[$sender->getName()];
         switch($args[0]) {
             case "accept":
-			$this->trade_part[$sender->getName()] = 5.5;
-            if($this->trade_part[$player2->getName()] = 5.5) {
+			$this->trade_part[$sender->getName()] = 6;
+            if($this->trade_part[$player2->getName()] = 6) {
                 $player2->sendMessage($this->line_breaker . C::GREEN . $sender->getName(). " accepted the trade  !");
                 $sender->sendMessage($this->line_breaker . C::GREEN . "You accepted the trade.");
                 $player2->sendMessage($this->line_breaker .  C::GREEN . "You have both accepted the trade. Processing transfer...");
@@ -186,7 +189,6 @@ switch($cmd->getName()){
             unset($this->trade_with[$player2->getName()]);
             unset($this->items[$sender->getName()]);
             unset($this->items[$player2->getName()]);
-            
             break;
         }
         break;
