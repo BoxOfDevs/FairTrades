@@ -3,6 +3,7 @@ namespace BoxOfDevs\FairTrades ;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\event\Listener;
+use pocketmine\item\Item;
 use pocketmine\event\player\PlayerChatEvent;
 use BoxOfDevs\FairTrades\chatTask;
 use BoxOfDevs\FairTrades\ItemStore;
@@ -37,6 +38,7 @@ public function setTradePhase(Player $player, $tradephase) {
  public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
 switch($cmd->getName()){
 	case "trade":
+    $test = new ItemStore($this, $sender);
     if(!isset($this->trade_part[$sender->getName()])) {
         $this->trade_part[$sender->getName()] = 0;
     }
@@ -45,6 +47,7 @@ switch($cmd->getName()){
     } elseif($args[0] === "setpart") {
         $this->setTradePhase($sender, $args[1]);
     }
+    if($sender instanceof Player) {
 	switch($this->trade_part[$sender->getName()]) {
 		case 0:
 		if(isset($args[0]) and $this->getServer()->getPlayer($args[0]) instanceof Player) {
@@ -123,11 +126,10 @@ switch($cmd->getName()){
                 $this->items[$player2->getName()] = new ItemStore($this, $player2);
             }
 			if($args[0] === "additem") {
-				$item = explode(":", $args[1]);
-                $this->items[$sender->getName()]->addItem($item[0], $item[1], $args[2]);
+                $this->items[$sender->getName()]->addItem(Item::fromString($args[1]));
 			} elseif($args[0] === "removeitem") {
 				$item = explode(":", $args[1]);
-                $this->items[$sender->getName()]->removeItem($item[0], $item[1], $args[2]);
+                $this->items[$sender->getName()]->removeItem(Item::fromString($args[1]));
             } else {
 				$sender->sendMessage($this->line_breaker .  C::RED . "Please enter a correct choice: /trade additem <item:damage> <count>,  /trade removeitem <item:damage> <count>, /trade check or /trade finish");
 			}
@@ -191,6 +193,7 @@ switch($cmd->getName()){
 	}
 	return true;
 	break;
+    }
 }
 return false;
  }
