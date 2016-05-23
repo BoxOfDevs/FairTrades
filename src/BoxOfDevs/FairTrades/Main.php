@@ -95,7 +95,7 @@ switch($cmd->getName()){
 			$player2 = $this->trade_with[$sender->getName()];
 			if($args[0] === "accept") { //If the trade is accepted
 				$player2->sendMessage($this->line_breaker . C::GREEN .$sender->getName() . " accepted the trade.");
-				$sender->sendMessage($this->line_breaker . C::GREEN . " You accepted the trade.");
+				$sender->sendMessage($this->line_breaker . C::GREEN . " You accepted the trade, waiting for $player2 to accept the trade.");
 				$this->trade_part[$sender->getName()] = 3.5;
 				if($this->trade_part[$player2->getName()] === 3.5) { // if the other player already accepted the trade, they would have both accepted
 				      $this->trade_part[$sender->getName()] = 4;
