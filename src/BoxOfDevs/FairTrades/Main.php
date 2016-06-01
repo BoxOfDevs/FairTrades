@@ -154,8 +154,8 @@ switch($cmd->getName()){
 			$sender->sendMessage($this->line_breaker . C::RED . "Usage: /trade additem <item:damage> <count>,  /trade removeitem <item:damage> <count> or /trade finish");
 		}
 		break;
-        case 5:
         case 6:
+        case 5:
 		$player2 = $this->trade_with[$sender->getName()];
         switch($args[0]) {
             case "accept":

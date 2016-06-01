@@ -44,7 +44,7 @@ class ItemStore {
                    if($this->hasItem($item)) {
                        $player->getInventory()->addItem($item);
                        $this->logger->debug($this->player->getName() . " tranfered item " . $item->getId() . ":" . $item->getDamage() . " x" .  $item->getCount() . " to" . $player->getName());
-                       $this->player->getInventory()->remove($item);
+                       $this->player->getInventory()->removeItem($item);
                    }
        }
    }
